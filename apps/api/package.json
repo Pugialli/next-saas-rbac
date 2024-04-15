@@ -1,21 +1,22 @@
 {
-  "name": "@saas/auth",
+  "name": "@saas/api",
   "version": "1.0.0",
-  "private": true,
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "scripts": {
+    "dev": "tsx watch src/index.ts"
+  },
   "dependencies": {
-    "@casl/ability": "^6.7.1",
-    "zod": "^3.22.4"
+    "@saas/auth": "workspace:*"
   },
   "devDependencies": {
     "@saas/eslint-config": "workspace:*",
     "@saas/prettier": "workspace:*",
-    "@saas/tsconfig": "workspace:*"
+    "@saas/tsconfig": "workspace:*",
+    "@types/node": "^20.12.7",
+    "tsx": "^4.7.2"
   },
   "eslintConfig": {
     "extends": [
-      "@saas/eslint-config/library"
+      "@saas/eslint-config/node"
     ]
   },
   "prettier": "@saas/prettier"
