@@ -1,12 +1,11 @@
 'use server'
 
 import { HTTPError } from 'ky'
+import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
 
 import { getCurrentOrg } from '@/auth/auth'
 import { createProject } from '@/http/create-project'
-
-// import { createProject } from '@/http/create-project'
 
 const projectSchema = z.object({
   name: z.string().min(4, { message: 'Please include at least 4 characters' }),
@@ -14,6 +13,8 @@ const projectSchema = z.object({
 })
 
 export async function createProjectAction(data: FormData) {
+  const currentOrg = getCurrentOrg()
+
   const result = projectSchema.safeParse(Object.fromEntries(data))
 
   if (!result.success) {
@@ -30,6 +31,8 @@ export async function createProjectAction(data: FormData) {
       name,
       description,
     })
+
+    revalidateTag(`${currentOrg}/projects`)
   } catch (err) {
     if (err instanceof HTTPError) {
       const { message } = await err.response.json()
